@@ -1,25 +1,25 @@
 <?php
 
 include_once "../Classes/Jeepney.php";
+include_once "../Classes/Helpers.php";
+include_once "../Classes/Response.php";
 
-use Classes\Jeepney;
+use Classes\Helpers;
+use Classes\Response;
 
+// decode incoming data
 $datas = json_decode(file_get_contents('php://input'), true);
 
-$invalids = [];
-$acceptable = [];
+$acceptable = Helpers::getAcceptableJeepneys($datas);
+$invalids = Helpers::getInvalidJeepneys($datas);
+$merge_data = Helpers::mergeValues($acceptable);
+$duplicates = Helpers::getDuplicates($merge_data);
+$jeepneys = Helpers::getJeepneyWithRoute($acceptable);
 
-foreach ($datas as $data){
-    if(!Jeepney::key_in_jeepneys($data)){
-        array_push($invalids, $data);
-    }else{
-        array_push($acceptable, $data);
-    }
-}
+$response = new Response();
+$response->datas = $jeepneys;
+$response->invalids = $invalids;
+$response->duplicates = $duplicates;
 
-$valuedData = [];
-foreach($acceptable as $data){
-    array_push($valuedData, [$data => Jeepney::get_jeepney_value($data)]);
-}
+echo json_encode($response);
 
-echo json_encode(['data'=>$valuedData, 'invalids' => $invalids]);

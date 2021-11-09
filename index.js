@@ -36,8 +36,9 @@ myform.addEventListener('submit', async(e) => {
 
     response = await response.json()
 
-    if(response.data.length > 0){
-        addDataToTable(response.data, 'success')
+    console.log(response)
+    if(response.datas.length > 0){
+        addDataToTable(response.datas, 'success', response.duplicates)
     }
 
     if(response.invalids.length > 0){
@@ -77,14 +78,15 @@ function checkIf2DigitsIsNumberic(values){
     return errors;
 }
 
-function addDataToTable(value, status)
+
+function addDataToTable(value, status, duplicates)
 {
     let tableDatas = ''
 
     for(let count = 0 ; count < value.length; count++){
         if(status == 'success'){
-            let key = Object.keys(value[count])
-            tableDatas += `<tr> <td> ${key[count]} </td> <td> ${value[count][key[count]]} </td> </tr>`
+            let route = checkDuplicates(value[count].routes, duplicates)
+            tableDatas += `<tr> <td> ${value[count].jeepney} </td> <td> ${route} </td> </tr>`
         }else{
             tableDatas += `<tr class='table-danger'> <td> ${value[count]}</td> <td> Invalid Jeepney Code </td> </tr>`
         }
@@ -92,7 +94,25 @@ function addDataToTable(value, status)
     table_body.innerHTML += tableDatas
 }
 
+function checkDuplicates(routes, duplicates)
+{
+    let data = ''    
+    for(let duplicate of duplicates){    
 
-function checkIfRoutesAreTheSame(){
-
+        for(let x = 0 ; x < routes.length ; x++){
+            if(duplicate.destination == routes[x])
+            {
+                if(duplicate.count == 2){
+                    data += `<span class='text-primary'> ${routes[x]} </span>`
+                }else if(duplicate.count > 2){
+                    data += `<span class='text-danger'> ${routes[x]} </span>`
+                }else if (duplicate.count == 1){
+                    data += `<span> ${routes[x]} </span>`
+                }
+            }
+        }   
+    }
+    return data
 }
+
+

@@ -4,6 +4,28 @@ namespace Classes;
 
 class Jeepney
 {
+
+    private static $destinations = [
+        'Alpha',
+        'Bravo',
+        'Charlie',
+        'Delta',
+        'Echo',
+        'Foxtrot',
+        'Golf',
+        'Hotel',
+        'India',
+        'Juliet',
+        'Kilo',
+        'Lima',
+        'Mike',
+        'November',
+        'Oscar',
+        'Papa',
+        'Quebec',
+        'Romeo'
+    ];
+
     private static $jeepneys = [
         '01A' => ['Alpha','Bravo','Charlie','Echo','Golf'],
         '02B' => ['Bravo', 'Charlie','Delta','Foxtrot','Golf',],
@@ -31,5 +53,11 @@ class Jeepney
     {
         return self::$jeepneys[$value];
     }
+
+    public static function getDestinations()
+    {
+        return self::$destinations;
+    }
+
 
 }
