@@ -1,6 +1,6 @@
 <?php
 
-namespace Backend\Classes;
+namespace Classes;
 
 class Jeepney
 {
@@ -22,5 +22,14 @@ class Jeepney
         '42D' => ['Juliet', 'November', 'Oscar', 'Quebec', 'Romeo']
     ];
 
-    
+    public static function key_in_jeepneys($value)
+    {
+        return array_key_exists($value, self::$jeepneys);
+    }
+
+    public static function get_jeepney_value($value)
+    {
+        return self::$jeepneys[$value];
+    }
+
 }
