@@ -109,6 +109,10 @@ function checkDuplicates(routes, duplicates)
                 }else if (duplicate.count == 1){
                     data += `<span> ${routes[x]} </span>`
                 }
+
+                if(x < routes.length -1){
+                    data += '<-> '
+                }
             }
         }   
     }
